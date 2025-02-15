@@ -94,9 +94,28 @@
             position: absolute;
             width: 30px;
             height: 30px;
+            background-color: red;
+            transform: rotate(45deg);
+            animation: falling 4s linear infinite;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background-color: red;
-            animation: falling 4s linear infinite;
+        }
+
+        .heart:before {
+            left: 0;
+            top: -15px;
+        }
+
+        .heart:after {
+            left: 15px;
+            top: 0;
         }
 
         @keyframes falling {
@@ -170,7 +189,6 @@
                 heart.classList.add("heart");
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.top = "-10vh";  // เริ่มต้นที่ด้านบนของหน้าจอ
-                heart.style.backgroundColor = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"][Math.floor(Math.random() * 4)];
                 document.body.appendChild(heart);
                 setTimeout(() => heart.remove(), 4000);  // หัวใจจะหายไปหลังจาก 4 วินาที
             }, 500);
