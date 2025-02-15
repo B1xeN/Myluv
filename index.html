@@ -100,25 +100,14 @@
         }
         .heart {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: red;
-            transform: rotate(-45deg);
+            width: 30px;
+            height: 30px;
+            background-size: cover;
             animation: fall 5s linear infinite;
         }
-        .heart::before, .heart::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background-color: inherit;
-            border-radius: 50%;
-        }
-        .heart::before { top: -10px; left: 0; }
-        .heart::after { top: 0; left: 10px; }
         @keyframes fall {
-            from { transform: translateY(-100px) rotate(-45deg); opacity: 1; }
-            to { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+            from { transform: translateY(-100px); opacity: 1; }
+            to { transform: translateY(100vh); opacity: 0; }
         }
     </style>
 </head>
@@ -132,7 +121,7 @@
             </div>
         </div>
         <p>รักแกนะไอต้าวรักมากๆเล๊ยยยยยยยย</p>
-        <button class="play-button" onclick="playMusic()">💗 กดจิๆ 💗</button>
+        <button class="play-button" onclick="startEffects()">💗 กดจิๆ 💗</button>
         <div id="youtube-player"></div>
     </div>
     <div class="hearts"></div>
@@ -146,24 +135,24 @@
         setInterval(changeImage, 3000);
 
         let player;
+        function startEffects() {
+            playMusic();
+            createHeartsEffect();
+        }
+        
         function playMusic() {
             if (!player) {
                 let tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
                 let firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
                 window.onYouTubeIframeAPIReady = function() {
                     player = new YT.Player('youtube-player', {
                         height: '0',
                         width: '0',
                         videoId: 'OYPiXBIgvJ8',
                         playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'OYPiXBIgvJ8' },
-                        events: {
-                            'onReady': function(event) {
-                                event.target.playVideo();
-                            }
-                        }
+                        events: { 'onReady': function(event) { event.target.playVideo(); } }
                     });
                 };
             } else {
@@ -176,13 +165,11 @@
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
                 heart.style.left = Math.random() * 100 + "vw";
-                heart.style.backgroundColor = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"][Math.floor(Math.random() * 4)];
-                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                heart.style.backgroundImage = "url('heart.png')";
                 document.querySelector(".hearts").appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
             }, 300);
         }
-        createHeartsEffect();
     </script>
 </body>
 </html>
