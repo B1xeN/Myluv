@@ -150,7 +150,7 @@
                     player = new YT.Player('youtube-player', {
                         height: '0',
                         width: '0',
-                        videoId: 'OYPiXBIgvJ8',
+                        videoId: 'OYPiXBIgvJ8',  // ใส่ ID ของวิดีโอที่ต้องการให้เล่น
                         playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'OYPiXBIgvJ8' },
                         events: { 'onReady': function(event) { event.target.playVideo(); } }
                     });
@@ -162,14 +162,16 @@
 
         function createHeartsEffect() {
             // สร้างหัวใจที่ตกลงมาเมื่อกดปุ่ม
-            setInterval(() => {
+            let heartInterval = setInterval(() => {
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
                 heart.style.left = Math.random() * 100 + "vw";
-                heart.style.backgroundImage = "url('heart.png')";
+                heart.style.backgroundImage = "url('heart.png')"; // ใส่ URL ของภาพหัวใจ
                 document.querySelector(".hearts").appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
             }, 300);
+            // หยุดการตกเมื่อหัวใจตกครบแล้ว
+            setTimeout(() => clearInterval(heartInterval), 10000); // หยุดหลัง 10 วินาที
         }
     </script>
 </body>
