@@ -187,6 +187,12 @@
             setInterval(() => {
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
+
+                // เลือกสีหัวใจแบบสุ่มจากชุดสี
+                const colors = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.backgroundColor = randomColor;
+
                 heart.style.left = Math.random() * 100 + "vw";
                 heart.style.top = "-10vh";  // เริ่มต้นที่ด้านบนของหน้าจอ
                 document.body.appendChild(heart);
