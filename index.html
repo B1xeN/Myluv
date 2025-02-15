@@ -90,6 +90,36 @@
         .play-button:hover {
             transform: scale(1.1);
         }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: fall 5s linear infinite;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { top: 0; left: 10px; }
+        @keyframes fall {
+            from { transform: translateY(-100px) rotate(-45deg); opacity: 1; }
+            to { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -105,6 +135,7 @@
         <button class="play-button" onclick="playMusic()">💗 กดจิๆ 💗</button>
         <div id="youtube-player"></div>
     </div>
+    <div class="hearts"></div>
     <script>
         let images = ["1.png", "2.png"];
         let index = 0;
@@ -139,6 +170,19 @@
                 player.playVideo();
             }
         }
+
+        function createHeartsEffect() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("heart");
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.backgroundColor = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"][Math.floor(Math.random() * 4)];
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+                document.querySelector(".hearts").appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+        createHeartsEffect();
     </script>
 </body>
 </html>
