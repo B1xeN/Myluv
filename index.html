@@ -90,6 +90,25 @@
         .play-button:hover {
             transform: scale(1.1);
         }
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: red;
+            animation: falling 4s linear infinite;
+        }
+
+        @keyframes falling {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -106,6 +125,7 @@
         <div id="youtube-player"></div>
     </div>
     <div class="hearts"></div>
+
     <script>
         let images = ["1.png", "2.png"];
         let index = 0;
@@ -139,20 +159,22 @@
             } else {
                 player.playVideo();
             }
+
+            createFallingHeartsEffect();  // เรียกใช้ฟังก์ชันสร้างหัวใจตก
         }
 
-        function createHeartsEffect() {
+        function createFallingHeartsEffect() {
+            // สร้างหัวใจที่ตกลงมาหลังจากการกดปุ่ม
             setInterval(() => {
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
                 heart.style.left = Math.random() * 100 + "vw";
+                heart.style.top = "-10vh";  // เริ่มต้นที่ด้านบนของหน้าจอ
                 heart.style.backgroundColor = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"][Math.floor(Math.random() * 4)];
-                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-                document.querySelector(".hearts").appendChild(heart);
-                setTimeout(() => heart.remove(), 5000);
-            }, 300);
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 4000);  // หัวใจจะหายไปหลังจาก 4 วินาที
+            }, 500);
         }
-        createHeartsEffect();
     </script>
 </body>
 </html>
