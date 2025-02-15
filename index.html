@@ -29,50 +29,6 @@
             border-radius: 20px;
             box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
         }
-        h1 {
-            color: #ffffff;
-            font-size: 2.5em;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        p {
-            font-size: 22px;
-            color: #fff;
-            font-weight: bold;
-            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-        }
-        .play-button {
-            background: linear-gradient(135deg, #ff4e50, #ff7873);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-size: 20px;
-            cursor: pointer;
-            border-radius: 12px;
-            margin-top: 20px;
-            transition: transform 0.2s;
-        }
-        .play-button:hover {
-            transform: scale(1.1);
-        }
-        .hearts {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-        .heart {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-size: cover;
-            animation: fall 5s linear infinite;
-        }
-        @keyframes fall {
-            from { transform: translateY(-100px); opacity: 1; }
-            to { transform: translateY(100vh); opacity: 0; }
-        }
         .image-wrapper {
             position: relative;
             display: flex;
@@ -109,6 +65,36 @@
             border-radius: 50%;
             object-fit: cover;
         }
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            transform: rotate(-45deg);
+            animation: fall 5s linear infinite;
+        }
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { top: 0; left: 10px; }
+        @keyframes fall {
+            from { transform: translateY(-100px) rotate(-45deg); opacity: 1; }
+            to { transform: translateY(100vh) rotate(-45deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -117,42 +103,42 @@
         <div class="image-wrapper">
             <div class="rotating-circle"></div>
             <div class="image-container">
-                <img id="changing-image" src="1.png" >
+                <img id="changing-image" src="1.png">
             </div>
         </div>
         <p>รักแกนะไอต้าวรักมากๆเล๊ยยยยยยยย</p>
-        <button class="play-button" onclick="startEffects()">💗 กดจิๆ 💗</button>
+        <button class="play-button" onclick="playMusic()">💗 เล่นเพลง 💗</button>
+        <div id="youtube-player"></div>
     </div>
     <div class="hearts"></div>
     <script>
-        let images = ["1.png", "2.png"];  // เปลี่ยนภาพที่ต้องการ
+        let images = ["1.png", "2.png"];
         let index = 0;
-
         function changeImage() {
             index = (index + 1) % images.length;
             document.getElementById("changing-image").src = images[index];
         }
-        setInterval(changeImage, 3000);  // เปลี่ยนทุก 3 วินาที
+        setInterval(changeImage, 3000);
 
         let player;
-        function startEffects() {
-            playMusic();
-            createHeartsEffect();
-        }
-        
         function playMusic() {
             if (!player) {
                 let tag = document.createElement('script');
                 tag.src = "https://www.youtube.com/iframe_api";
                 let firstScriptTag = document.getElementsByTagName('script')[0];
                 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
                 window.onYouTubeIframeAPIReady = function() {
                     player = new YT.Player('youtube-player', {
                         height: '0',
                         width: '0',
-                        videoId: 'OYPiXBIgvJ8',  // ใส่ ID ของวิดีโอที่ต้องการให้เล่น
+                        videoId: 'OYPiXBIgvJ8',
                         playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'OYPiXBIgvJ8' },
-                        events: { 'onReady': function(event) { event.target.playVideo(); } }
+                        events: {
+                            'onReady': function(event) {
+                                event.target.playVideo();
+                            }
+                        }
                     });
                 };
             } else {
@@ -161,18 +147,17 @@
         }
 
         function createHeartsEffect() {
-            // สร้างหัวใจที่ตกลงมาเมื่อกดปุ่ม
-            let heartInterval = setInterval(() => {
+            setInterval(() => {
                 const heart = document.createElement("div");
                 heart.classList.add("heart");
                 heart.style.left = Math.random() * 100 + "vw";
-                heart.style.backgroundImage = "url('heart.png')"; // ใส่ URL ของภาพหัวใจ
+                heart.style.backgroundColor = ["#ff0000", "#ff69b4", "#00bfff", "#ffff00"][Math.floor(Math.random() * 4)];
+                heart.style.animationDuration = Math.random() * 3 + 2 + "s";
                 document.querySelector(".hearts").appendChild(heart);
                 setTimeout(() => heart.remove(), 5000);
             }, 300);
-            // หยุดการตกเมื่อหัวใจตกครบแล้ว
-            setTimeout(() => clearInterval(heartInterval), 10000); // หยุดหลัง 10 วินาที
         }
+        createHeartsEffect();
     </script>
 </body>
 </html>
