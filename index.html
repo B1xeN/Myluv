@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .image-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
+            height: 220px;
+            margin-bottom: 20px;
+        }
+        .image-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid white;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: absolute;
+        }
+        .rotating-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 5px dashed #e60073;
+            position: absolute;
+            animation: spin 5s linear infinite;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        h1 {
+            color: #ffffff;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        p {
+            font-size: 22px;
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+        }
+        .play-button {
+            background: linear-gradient(135deg, #ff4e50, #ff7873);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 12px;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💖 Happy Valentine's Day 💖</h1>
+        <div class="image-wrapper">
+            <div class="rotating-circle"></div>
+            <div class="image-container">
+                <img id="changing-image" src="1.png" >
+            </div>
+        </div>
+        <p>รักแกนะไอต้าวรักมากๆเล๊ยยยยยยยย</p>
+        <button class="play-button" onclick="playMusic()">💗 กดจิๆ 💗</button>
+        <div id="youtube-player"></div>
+    </div>
+    <script>
+        let images = ["1.png", "2.png"];
+        let index = 0;
+        function changeImage() {
+            index = (index + 1) % images.length;
+            document.getElementById("changing-image").src = images[index];
+        }
+        setInterval(changeImage, 3000);
+
+        let player;
+        function playMusic() {
+            if (!player) {
+                let tag = document.createElement('script');
+                tag.src = "https://www.youtube.com/iframe_api";
+                let firstScriptTag = document.getElementsByTagName('script')[0];
+                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+                window.onYouTubeIframeAPIReady = function() {
+                    player = new YT.Player('youtube-player', {
+                        height: '0',
+                        width: '0',
+                        videoId: 'OYPiXBIgvJ8',
+                        playerVars: { 'autoplay': 1, 'loop': 1, 'playlist': 'OYPiXBIgvJ8' },
+                        events: {
+                            'onReady': function(event) {
+                                event.target.playVideo();
+                            }
+                        }
+                    });
+                };
+            } else {
+                player.playVideo();
+            }
+        }
+    </script>
+</body>
+</html>
